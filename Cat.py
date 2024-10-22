@@ -170,6 +170,26 @@ class Layer:
         return self.vertex.copy()
 
 def rander(init_yaml, key_yaml, conf_inf, psd_size=(354,612)):
+    # Collect events until released
+    with keyboard.Listener(
+            on_press=on_press,
+            on_release=on_release) as listener_k:
+        listener_k.join()
+    with mouse.Listener(
+            on_move=on_move,
+            on_click=on_click) as listener_m:
+        listener_m.join()
+
+    # ...or, in a non-blocking fashion:
+    listener_k = keyboard.Listener(
+        on_press=on_press, 
+        on_release=on_release
+    )
+    listener_m = mouse.Listener(
+        on_move=on_move,
+        on_click=on_click)
+    listener_k.start()
+    listener_m.start()
     global model
     #global test_point
     global key_inf
@@ -410,23 +430,3 @@ if __name__ == '__main__':
     rander(init_yaml="./Cat2/init.yaml",\
            key_yaml="./Cat2/keyinf.yaml",\
            conf_inf="./conf.yaml")
-    # Collect events until released
-    with keyboard.Listener(
-            on_press=on_press,
-            on_release=on_release) as listener_k:
-        listener_k.join()
-    with mouse.Listener(
-            on_move=on_move,
-            on_click=on_click) as listener_m:
-        listener_m.join()
-
-    # ...or, in a non-blocking fashion:
-    listener_k = keyboard.Listener(
-        on_press=on_press, 
-        on_release=on_release
-    )
-    listener_m = mouse.Listener(
-        on_move=on_move,
-        on_click=on_click)
-    listener_k.start()
-    listener_m.start()
