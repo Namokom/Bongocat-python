@@ -6,7 +6,7 @@ Bongo Cat in python.
 
 - Mouse tracking (with movable arms draw in Bézier lines)
 - Keyboard tracking
-- Windowless and auto translucency(am delete this funsion)
+- Windowless and auto translucency: (This function has been removed.)
 - It cross-platform (Windows, Mac, Linux x11 and Wayland)
 
 To run the code, you need to install the packages:
