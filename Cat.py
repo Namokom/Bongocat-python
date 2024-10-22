@@ -379,7 +379,7 @@ def draw_bezier(curve):
 
 monitor_width, monitor_height = get_monitor_size()
 
-src_points = np.array([[0, 0], [monitor_width, 0], [monitor_width, monitor_heigt], [0, monitor_width]])
+src_points = np.array([[0, 0], [monitor_width, 0], [monitor_width, monitor_height], [0, monitor_height]])
 dst_points = np.array([[254, 135], [212, 70], [187, 111],[232, 192]])
 M_custom = get_perspective_transform_matrix(src_points, dst_points)
 
