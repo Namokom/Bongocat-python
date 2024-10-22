@@ -220,9 +220,9 @@ def rander(init_yaml, key_yaml, conf_inf, psd_size=(354,612)):
 def key_callback(key):
     global key_inf
     try:
-        k = key.char  # ตัวอักษรธรรมดา
+        k = key.char
     except:
-        k = key.name  # กรณีเป็นปุ่มพิเศษ เช่น Shift, Ctrl
+        k = key.name 
     
     if k in key_inf:
         key_inf[k]["mode"] = 1 if isinstance(key, keyboard.Events.Press) else 0
