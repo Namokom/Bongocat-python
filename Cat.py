@@ -17,6 +17,9 @@ current_mouse_pos = (0, 0)
 left_pressed = False
 right_pressed = False
 
+print(current_mouse_pos)
+print(left_pressed, right_pressed)
+
 def on_move(x, y):
     global current_mouse_pos
     current_mouse_pos = (x, y)
@@ -30,9 +33,11 @@ def on_click(x, y, button, pressed):
 
 def on_press(key):
     key_callback(key)
+    print(key)
 
 def on_release(key):
     key_callback(key)
+    print(key)
 
 def get_monitor_size():
     monitors = get_monitors()
@@ -380,7 +385,7 @@ def draw_bezier(curve):
 monitor_width, monitor_height = get_monitor_size()
 
 src_points = np.array([[0, 0], [monitor_width, 0], [monitor_width, monitor_height], [0, monitor_height]])
-dst_points = np.array([[254, 135], [212, 70], [187, 111],[232, 192]])
+dst_points = np.array([[254, 135], [212, 70], [187, 111], [232, 192]])
 M_custom = get_perspective_transform_matrix(src_points, dst_points)
 
 translucent = 0
@@ -389,11 +394,12 @@ def get_pos_from_custom():
     global translucent
     global move_up
     custom_x, custom_y = current_mouse_pos
-    if custom_x >= (monitor_width - 612) and custom_x <= monitor_width and (monitor_heigt- 354 - move_up[0]) <= custom_y and custom_y <= (monitor_heigt - move_up[0]) and translucent == 0:
+    print(custom_x, custom_y)
+    if custom_x >= (monitor_width - 612) and custom_x <= monitor_width and (monitor_height - 354 - move_up[0]) <= custom_y and custom_y <= (monitor_height - move_up[0]) and translucent == 0:
         translucent = 1
-    elif (custom_x < (monitor_width - 612) or custom_x > monitor_width or (monitor_heigt - 354 - move_up[0]) > custom_y or custom_y > (monitor_heigt - move_up[0])) and translucent == 1:
+    elif (custom_x < (monitor_width - 612) or custom_x > monitor_width or (monitor_height - 354 - move_up[0]) > custom_y or custom_y > (monitor_height - move_up[0])) and translucent == 1:
         translucent = 0
-    point = np.array([custom_x,custom_y, 1])
+    point = np.array([custom_x, custom_y, 1])
     new_point = np.dot(M_custom, point)
     X, Y, Z = new_point
     x_prime = X / Z
@@ -405,10 +411,14 @@ if __name__ == '__main__':
            key_yaml="./Cat2/keyinf.yaml",\
            conf_inf="./conf.yaml")
     # Collect events until released
+    with keyboard.Listener(
+            on_press=on_press,
+            on_release=on_release) as listener_k:
+        listener_k.join()
     with mouse.Listener(
             on_move=on_move,
-            on_click=on_click) as listener:
-        listener.join()
+            on_click=on_click) as listener_m:
+        listener_m.join()
 
     # ...or, in a non-blocking fashion:
     listener_k = keyboard.Listener(
