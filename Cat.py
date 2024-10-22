@@ -17,12 +17,10 @@ current_mouse_pos = (0, 0)
 left_pressed = False
 right_pressed = False
 
-print(current_mouse_pos)
-print(left_pressed, right_pressed)
-
 def on_move(x, y):
     global current_mouse_pos
     current_mouse_pos = (x, y)
+    print(current_mouse_pos)
 
 def on_click(x, y, button, pressed):
     global left_pressed, right_pressed
@@ -30,14 +28,15 @@ def on_click(x, y, button, pressed):
         left_pressed = pressed 
     elif button == mouse.Button.right:
         right_pressed = pressed
+    print(left_pressed, right_pressed)
 
 def on_press(key):
-    key_callback(key)
     print(key)
+    key_callback(key)
 
 def on_release(key):
-    key_callback(key)
     print(key)
+    key_callback(key)
 
 def get_monitor_size():
     monitors = get_monitors()
