@@ -250,19 +250,15 @@ def draw_key():
 
 # ---------- 窗口生成 ----------
 window = None
-hWindow = FindWindow("GLFW30","V")
-exStyle = WS_EX_LAYERED | WS_EX_TRANSPARENT
 
-def init_window(v_size=(612,354)):
+def init_window(v_size=(612, 354)):
     global move_up
     glfw.init()
-    glfw.window_hint(glfw.DECORATED, False)
-    glfw.window_hint(glfw.TRANSPARENT_FRAMEBUFFER, True)
-    glfw.window_hint(glfw.FLOATING, True)
+    glfw.window_hint(glfw.DECORATED, True)  # เปิดการแสดงกรอบหน้าต่าง
+    glfw.window_hint(glfw.TRANSPARENT_FRAMEBUFFER, False)  # ไม่ใช้เฟรมบัฟเฟอร์โปร่งใส
+    glfw.window_hint(glfw.FLOATING, False)  # ไม่ให้หน้าต่างลอย
     glfw.window_hint(glfw.SAMPLES, 4)
-    #glfw.window_hint(glfw.FOCUS_ON_SHOW, False)
-    #glfw.window_hint(glfw.FOCUSED, False)
-    glfw.window_hint(glfw.RESIZABLE, False)
+    glfw.window_hint(glfw.RESIZABLE, True)  # ปรับขนาดหน้าต่างได้
     window = glfw.create_window(*v_size, "V", None, None)
     glfw.make_context_current(window)
     monitor_size = glfw.get_video_mode(glfw.get_primary_monitor()).size
@@ -271,9 +267,6 @@ def init_window(v_size=(612,354)):
     glEnable(GL_BLEND)
     glEnable(GL_TEXTURE_2D)
     glBlendFuncSeparate(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_ONE, GL_ONE_MINUS_SRC_ALPHA)
-    hWindow = FindWindow("GLFW30","V")
-    exStyle = WS_EX_LAYERED | WS_EX_TRANSPARENT
-    SetWindowLong(hWindow, GWL_EXSTYLE, exStyle)
     return window
 
 def reload_thread(path):
@@ -394,7 +387,6 @@ translucent = 0
 def get_pos_from_custom():
     global M_custom
     global translucent
-    global hWindow
     global move_up
     custom_x, custom_y = current_mouse_pos
     if custom_x >= (monitor_width - 612) and custom_x <= monitor_width and (monitor_heigt- 354 - move_up[0]) <= custom_y and custom_y <= (monitor_heigt - move_up[0]) and translucent == 0:
