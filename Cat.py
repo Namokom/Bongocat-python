@@ -170,25 +170,6 @@ class Layer:
 
 def rander(init_yaml, key_yaml, conf_inf, psd_size=(354,612)):
     # Collect events until released
-    with keyboard.Listener(
-            on_press=on_press,
-            on_release=on_release) as listener_k:
-        listener_k.join()
-    with mouse.Listener(
-            on_move=on_move,
-            on_click=on_click) as listener_m:
-        listener_m.join()
-
-    # ...or, in a non-blocking fashion:
-    listener_k = keyboard.Listener(
-        on_press=on_press, 
-        on_release=on_release
-    )
-    listener_m = mouse.Listener(
-        on_move=on_move,
-        on_click=on_click)
-    listener_k.start()
-    listener_m.start()
     global model
     #global test_point
     global key_inf
@@ -240,6 +221,26 @@ def rander(init_yaml, key_yaml, conf_inf, psd_size=(354,612)):
         glfw.swap_buffers(window)
         glfw.poll_events()
         time.sleep(1/30)
+    
+    with keyboard.Listener(
+            on_press=on_press,
+            on_release=on_release) as listener_k:
+        listener_k.join()
+    with mouse.Listener(
+            on_move=on_move,
+            on_click=on_click) as listener_m:
+        listener_m.join()
+
+    # ...or, in a non-blocking fashion:
+    listener_k = keyboard.Listener(
+        on_press=on_press, 
+        on_release=on_release
+    )
+    listener_m = mouse.Listener(
+        on_move=on_move,
+        on_click=on_click)
+    listener_k.start()
+    listener_m.start()
 
 def key_callback(key):
     global key_inf
