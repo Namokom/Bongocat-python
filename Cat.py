@@ -1,5 +1,6 @@
 import logging
 import threading
+import math
 import numpy as np
 import glfw
 import OpenGL
@@ -9,19 +10,38 @@ import yaml
 import time
 
 import pdb
-import win32api
-import keyboard
+from pynput import mouse, keyboard
+from screeninfo import get_monitors
 
-from win32api import SetWindowLong,RGB
-from win32con import WS_EX_LAYERED,WS_EX_TRANSPARENT,GWL_EXSTYLE,LWA_ALPHA
-from win32gui import GetWindowLong,GetForegroundWindow,SetLayeredWindowAttributes,FindWindow
+current_mouse_pos = (0, 0)
+left_pressed = False
+right_pressed = False
 
-# math_calc定义了常用的数学计算
-#from math_calc import *
+def on_move(x, y):
+    global current_mouse_pos
+    current_mouse_pos = (x, y)
 
-# 常用变换矩阵
+def on_click(x, y, button, pressed):
+    global left_pressed, right_pressed
+    if button == mouse.Button.left:
+        left_pressed = pressed 
+    elif button == mouse.Button.right:
+        right_pressed = pressed
 
-# 缩放矩阵
+def on_press(key):
+    key_callback(key)
+
+def on_release(key):
+    key_callback(key)
+
+def get_monitor_size():
+    monitors = get_monitors()
+    if monitors:
+        monitor_width = monitors[0].width
+        monitor_height = monitors[0].height
+        return monitor_width, monitor_height
+    return None, None
+
 def scale(x, y, z):
     a = np.eye(4, dtype=np.float32)
     a[0, 0] = x
@@ -96,7 +116,7 @@ def bezier_curve(control_points, n_points=100):
     t = np.linspace(0, 1, n_points)
     curve = np.zeros((n_points, 2))
     # 预先计算并存储所有需要的二项式系数
-    binomials = [np.math.factorial(n) // (np.math.factorial(i) * np.math.factorial(n - i)) for i in range(n + 1)]
+    binomials = [math.factorial(n) // (math.factorial(i) * math.factorial(n - i)) for i in range(n + 1)]
     for i in range(n_points):
         for j in range(n + 1):
             curve[i] += binomials[j] * (1 - t[i]) ** (n - j) * t[i] ** j * control_points[j]
@@ -168,7 +188,6 @@ def rander(init_yaml, key_yaml, conf_inf, psd_size=(354,612)):
 
     with open(key_yaml,encoding="utf8") as f:
         key_inf = yaml.safe_load(f)
-    keyboard.hook(key_callback)
 
     texture_cls = glGenTextures(1)
 
@@ -198,13 +217,15 @@ def rander(init_yaml, key_yaml, conf_inf, psd_size=(354,612)):
         glfw.poll_events()
         time.sleep(1/30)
 
-def key_callback(x):
+def key_callback(key):
     global key_inf
-    if x.name in key_inf:
-        if x.event_type == "down":
-            key_inf[x.name]["mode"] = 1
-        elif x.event_type == "up":
-            key_inf[x.name]["mode"] = 0
+    try:
+        k = key.char  # ตัวอักษรธรรมดา
+    except:
+        k = key.name  # กรณีเป็นปุ่มพิเศษ เช่น Shift, Ctrl
+    
+    if k in key_inf:
+        key_inf[k]["mode"] = 1 if isinstance(key, keyboard.Events.Press) else 0
 
 def draw_key():
     global key_inf
@@ -363,12 +384,7 @@ def draw_bezier(curve):
         glVertex4f(*p)
     glEnd()
 
-from win32 import win32api, win32gui, win32print
-from win32.lib import win32con
-
-hDC = win32gui.GetDC(0)
-monitor_width = win32print.GetDeviceCaps(hDC, win32con.DESKTOPHORZRES)
-monitor_heigt= win32print.GetDeviceCaps(hDC, win32con.DESKTOPVERTRES)
+monitor_width, monitor_height = get_monitor_size()
 
 src_points = np.array([[0, 0], [monitor_width, 0], [monitor_width, monitor_heigt], [0, monitor_width]])
 dst_points = np.array([[254, 135], [212, 70], [187, 111],[232, 192]])
@@ -380,14 +396,11 @@ def get_pos_from_custom():
     global translucent
     global hWindow
     global move_up
-    hWindow = FindWindow("GLFW30","V")
-    custom_x, custom_y = win32api.GetCursorPos()
+    custom_x, custom_y = current_mouse_pos
     if custom_x >= (monitor_width - 612) and custom_x <= monitor_width and (monitor_heigt- 354 - move_up[0]) <= custom_y and custom_y <= (monitor_heigt - move_up[0]) and translucent == 0:
         translucent = 1
-        SetLayeredWindowAttributes(hWindow,RGB(0,0,0),int(move_up[1]*255),LWA_ALPHA)
     elif (custom_x < (monitor_width - 612) or custom_x > monitor_width or (monitor_heigt - 354 - move_up[0]) > custom_y or custom_y > (monitor_heigt - move_up[0])) and translucent == 1:
         translucent = 0
-        SetLayeredWindowAttributes(hWindow,RGB(0,0,0),255,LWA_ALPHA)
     point = np.array([custom_x,custom_y, 1])
     new_point = np.dot(M_custom, point)
     X, Y, Z = new_point
@@ -395,7 +408,23 @@ def get_pos_from_custom():
     y_prime = Y / Z
     return np.array([x_prime, y_prime])
 
-if __name__ == '__main__':
+if __name__ == '__main__': 
     rander(init_yaml="./Cat2/init.yaml",\
            key_yaml="./Cat2/keyinf.yaml",\
            conf_inf="./conf.yaml")
+    # Collect events until released
+    with mouse.Listener(
+            on_move=on_move,
+            on_click=on_click) as listener:
+        listener.join()
+
+    # ...or, in a non-blocking fashion:
+    listener_k = keyboard.Listener(
+        on_press=on_press, 
+        on_release=on_release
+    )
+    listener_m = mouse.Listener(
+        on_move=on_move,
+        on_click=on_click)
+    listener_k.start()
+    listener_m.start()
