@@ -126,7 +126,6 @@ def bezier_curve(control_points, n_points=100):
             curve[i] += binomials[j] * (1 - t[i]) ** (n - j) * t[i] ** j * control_points[j]
     return curve
 
-
 # ---------- 图层类定义 ----------
 class Layer:
     def __init__(self, name, bbox, npdata, model=None):
@@ -196,6 +195,12 @@ def rander(init_yaml, key_yaml, conf_inf, psd_size=(354,612)):
 
     texture_cls = glGenTextures(1)
 
+    listener_k = keyboard.Listener(on_press=on_press, on_release=on_release)  
+    listener_m = mouse.Listener(on_move=on_move, on_click=on_click)
+
+    listener_k.start()
+    listener_m.start()
+
     while not glfw.window_should_close(window):
         glClearColor(0,0,0,0)
         glClear(GL_COLOR_BUFFER_BIT)
@@ -221,26 +226,6 @@ def rander(init_yaml, key_yaml, conf_inf, psd_size=(354,612)):
         glfw.swap_buffers(window)
         glfw.poll_events()
         time.sleep(1/30)
-    
-    with keyboard.Listener(
-            on_press=on_press,
-            on_release=on_release) as listener_k:
-        listener_k.join()
-    with mouse.Listener(
-            on_move=on_move,
-            on_click=on_click) as listener_m:
-        listener_m.join()
-
-    # ...or, in a non-blocking fashion:
-    listener_k = keyboard.Listener(
-        on_press=on_press, 
-        on_release=on_release
-    )
-    listener_m = mouse.Listener(
-        on_move=on_move,
-        on_click=on_click)
-    listener_k.start()
-    listener_m.start()
 
 def key_callback(key):
     global key_inf
