@@ -482,7 +482,7 @@
     mode:
         1
 
-"alt":
+"alt_l":
     path:
         ./Cat2/keyboard/44.npy
     bbox:
@@ -504,7 +504,7 @@
     mode:
         1
 
-"ctrl":
+"ctrl_l":
     path:
         ./Cat2/keyboard/46.npy
     bbox:
@@ -515,7 +515,7 @@
     mode:
         1
 
-"caps lock":
+"caps_lock":
     path:
         ./Cat2/keyboard/47.npy
     bbox:
@@ -537,7 +537,7 @@
     mode:
         1
 
-"left windows":
+"cmd":
     path:
         ./Cat2/keyboard/49.npy
     bbox:
@@ -669,7 +669,7 @@
     mode:
         1
 
-"right ctrl":
+"ctrl_r":
     path:
         ./Cat2/keyboard/61.npy
     bbox:
@@ -680,7 +680,7 @@
     mode:
         1
 
-"right shift":
+"shift_r":
     path:
         ./Cat2/keyboard/62.npy
     bbox:
@@ -691,7 +691,7 @@
     mode:
         1
 
-"rigth alt":
+"alt_gr":
     path:
         ./Cat2/keyboard/63.npy
     bbox:
@@ -1185,7 +1185,7 @@
     mode:
         0
 
-"alt":
+"alt_l":
     path:
         ./Cat2/keyboard/44.npy
     bbox:
@@ -1207,7 +1207,7 @@
     mode:
         0
 
-"ctrl":
+"ctrl_l":
     path:
         ./Cat2/keyboard/46.npy
     bbox:
@@ -1218,7 +1218,7 @@
     mode:
         0
 
-"caps lock":
+"caps_lock":
     path:
         ./Cat2/keyboard/47.npy
     bbox:
@@ -1240,7 +1240,7 @@
     mode:
         0
 
-"left windows":
+"cmd":
     path:
         ./Cat2/keyboard/49.npy
     bbox:
@@ -1372,7 +1372,7 @@
     mode:
         0
 
-"right ctrl":
+"ctrl_r":
     path:
         ./Cat2/keyboard/61.npy
     bbox:
@@ -1383,7 +1383,7 @@
     mode:
         0
 
-"right shift":
+"shift_r":
     path:
         ./Cat2/keyboard/62.npy
     bbox:
@@ -1394,7 +1394,7 @@
     mode:
         0
 
-"rigth alt":
+"alt_gr":
     path:
         ./Cat2/keyboard/63.npy
     bbox:
@@ -1889,7 +1889,7 @@
     mode:
         0
 
-"alt":
+"alt_l":
     path:
         ./Cat2/keyboard/44.npy
     bbox:
@@ -1911,7 +1911,7 @@
     mode:
         0
 
-"ctrl":
+"ctrl_l":
     path:
         ./Cat2/keyboard/46.npy
     bbox:
@@ -1922,7 +1922,7 @@
     mode:
         0
 
-"caps lock":
+"caps_lock":
     path:
         ./Cat2/keyboard/47.npy
     bbox:
@@ -1944,7 +1944,7 @@
     mode:
         0
 
-"left windows":
+"cmd":
     path:
         ./Cat2/keyboard/49.npy
     bbox:
@@ -2076,7 +2076,7 @@
     mode:
         0
 
-"right ctrl":
+"ctrl_r":
     path:
         ./Cat2/keyboard/61.npy
     bbox:
@@ -2087,7 +2087,7 @@
     mode:
         0
 
-"right shift":
+"shift_r":
     path:
         ./Cat2/keyboard/62.npy
     bbox:
@@ -2098,7 +2098,7 @@
     mode:
         0
 
-"rigth alt":
+"alt_gr":
     path:
         ./Cat2/keyboard/63.npy
     bbox:
@@ -2593,7 +2593,7 @@
     mode:
         0
 
-"alt":
+"alt_l":
     path:
         ./Cat2/keyboard/44.npy
     bbox:
@@ -2615,8 +2615,8 @@
     mode:
         0
 
-"ctrl":
-    path:
+"ctrl_l":
+    path    :
         ./Cat2/keyboard/46.npy
     bbox:
         - 252
@@ -2626,7 +2626,7 @@
     mode:
         0
 
-"caps lock":
+"caps_lock":
     path:
         ./Cat2/keyboard/47.npy
     bbox:
@@ -2648,7 +2648,7 @@
     mode:
         0
 
-"left windows":
+"cmd":
     path:
         ./Cat2/keyboard/49.npy
     bbox:
@@ -2780,7 +2780,7 @@
     mode:
         0
 
-"right ctrl":
+"ctrl_r":
     path:
         ./Cat2/keyboard/61.npy
     bbox:
@@ -2791,7 +2791,7 @@
     mode:
         0
 
-"right shift":
+"shift_r":
     path:
         ./Cat2/keyboard/62.npy
     bbox:
@@ -2802,7 +2802,7 @@
     mode:
         0
 
-"rigth alt":
+"alt_gr":
     path:
         ./Cat2/keyboard/63.npy
     bbox:

@@ -20,7 +20,6 @@ right_pressed = False
 def on_move(x, y):
     global current_mouse_pos
     current_mouse_pos = (x, y)
-    print(current_mouse_pos)
 
 def on_click(x, y, button, pressed):
     global left_pressed, right_pressed
@@ -28,15 +27,12 @@ def on_click(x, y, button, pressed):
         left_pressed = pressed 
     elif button == mouse.Button.right:
         right_pressed = pressed
-    print(left_pressed, right_pressed)
 
 def on_press(key):
-    print(key)
-    key_callback(key)
+    key_callback(key, True)
 
 def on_release(key):
-    print(key)
-    key_callback(key)
+    key_callback(key, False)
 
 def get_monitor_size():
     monitors = get_monitors()
@@ -227,15 +223,15 @@ def rander(init_yaml, key_yaml, conf_inf, psd_size=(354,612)):
         glfw.poll_events()
         time.sleep(1/30)
 
-def key_callback(key):
+def key_callback(key, pressed):
     global key_inf
     try:
         k = key.char
-    except:
-        k = key.name 
+    except AttributeError:
+        k = key.name
     
     if k in key_inf:
-        key_inf[k]["mode"] = 1 if isinstance(key, keyboard.Events.Press) else 0
+        key_inf[k]["mode"] = 1 if pressed else 0
 
 def draw_key():
     global key_inf
@@ -268,8 +264,12 @@ def init_window(v_size=(612, 354)):
     glfw.window_hint(glfw.TRANSPARENT_FRAMEBUFFER, False)  # ไม่ใช้เฟรมบัฟเฟอร์โปร่งใส
     glfw.window_hint(glfw.FLOATING, False)  # ไม่ให้หน้าต่างลอย
     glfw.window_hint(glfw.SAMPLES, 4)
-    glfw.window_hint(glfw.RESIZABLE, True)  # ปรับขนาดหน้าต่างได้
-    window = glfw.create_window(*v_size, "V", None, None)
+    glfw.window_hint(glfw.RESIZABLE, False)  # ปรับขนาดหน้าต่างได้
+    icon_image = Image.open('texture/mouse.png')  # ใส่ path ของไฟล์ไอคอนของคุณ
+    icon_image = icon_image.convert('RGBA')
+    icon_data = np.array(icon_image)
+    glfw.set_window_icon(window, 1, [icon_data])
+    window = glfw.create_window(*v_size, "Bongo Cat", None, None)
     glfw.make_context_current(window)
     monitor_size = glfw.get_video_mode(glfw.get_primary_monitor()).size
     glfw.set_window_pos(window, monitor_size.width - v_size[0], monitor_size.height - v_size[1] - move_up[0])
@@ -399,7 +399,6 @@ def get_pos_from_custom():
     global translucent
     global move_up
     custom_x, custom_y = current_mouse_pos
-    print(custom_x, custom_y)
     if custom_x >= (monitor_width - 612) and custom_x <= monitor_width and (monitor_height - 354 - move_up[0]) <= custom_y and custom_y <= (monitor_height - move_up[0]) and translucent == 0:
         translucent = 1
     elif (custom_x < (monitor_width - 612) or custom_x > monitor_width or (monitor_height - 354 - move_up[0]) > custom_y or custom_y > (monitor_height - move_up[0])) and translucent == 1:
